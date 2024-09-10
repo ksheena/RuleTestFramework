@@ -10,7 +10,7 @@ Caldera Installation Steps:
 4. Create screen and run caldera build in caldera directory 
          screen -S caldera_install
          python3 server.py --insecure --build
-
+5. Access  http://localhost:8888 in Chrome browser. Credentials are there in default.yml file.
 
 Installation Document: 
 https://caldera.readthedocs.io/en/latest/Installing-Caldera.html
