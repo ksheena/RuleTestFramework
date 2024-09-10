@@ -8,4 +8,6 @@ Installation
 
 
 How to Work:
-1. Performe Adersvars
+1. Performe adversary emulation using caldera and collect the results in json format.
+2. Uisng calderaToAttire Operation results from caldera and converting them to the ATTiRe logging format, for use in vectr.
+3. Import the result in vectr to Analyz
