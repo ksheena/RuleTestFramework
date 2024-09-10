@@ -1,11 +1,11 @@
-#Install caddy
+1. Install caddy
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 sudo apt update
 sudo apt install caddy
 
-#Install Docker    
+2. Install Docker    
 sudo apt-get update
 sudo apt-get install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -19,7 +19,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 mkdir -p /opt/vectr/cert
 cd /opt/vectr/cert
 
-#Install Slef-Signed Certificate in the path /opt/vectr/cer and run command one by one and fill the details
+3. Install Slef-Signed Certificate in the path /opt/vectr/cer and run command one by one and fill the details
 openssl genrsa -out ca.key 2048
 openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem
 openssl genrsa -out server.key 2048
@@ -28,12 +28,12 @@ openssl x509 -req -in server.csr -CA myCA.pem -CAkey myCA.key -CAcreateserial -o
 openssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out server.crt -days 365 -sha256
 openssl x509 -in server.crt -text -noout
 
-#Create local DNS 
+4. Create local DNS 
 root@analyst-virtual-machine:/opt/vectr/cert# cat /etc/hosts
 10.99.156.108   calera-vectr.com
 
 
-# Install vectr          https://docs.vectr.io/Installation/
+5. Install vectr          https://docs.vectr.io/Installation/
 cd /opt/vectr
 wget https://github.com/SecurityRiskAdvisors/VECTR/releases/download/ce-9.3.3/sra-vectr-runtime-9.3.3-ce.zip 
 unzip sra-vectr-runtime-9.3.3-ce.zip
