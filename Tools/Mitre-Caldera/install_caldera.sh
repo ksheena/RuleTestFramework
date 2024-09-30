@@ -30,9 +30,11 @@ sudo apt --fix-broken install
 echo -e "Installing the Go_LANG:\n "
 wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz -O go.tar.gz
 sudo tar -xzvf go.tar.gz -C /usr/local
-echo "export PATH=$HOME/go/bin:/usr/local/go/bin:$PATH" >> ~/.profile
+echo "export PATH=\$PATH:/usr/local/go/bin" >> ~/.profile
+echo "export GOPATH=\$HOME/go" >> ~/.profile
+echo "export PATH=\$PATH:\$GOPATH/bin" >> ~/.profile
 source ~/.profile
-
+go version
 
 echo -e "Cloning Caldera repo \n"
 #git clone https://github.com/mitre/caldera.git --recursive
