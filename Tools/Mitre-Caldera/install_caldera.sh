@@ -38,8 +38,8 @@ source ~/.profile
 go version
 
 echo -e "Cloning Caldera repo \n"
-#git clone https://github.com/mitre/caldera.git --recursive
-git clone https://github.com/mitre/caldera.git --recursive --branch 5.0.0
+git clone https://github.com/mitre/caldera.git --recursive
+#git clone https://github.com/mitre/caldera.git --recursive --branch 5.0.0
 	
 echo -e "Install Python Requirement Modules: \n"
 path=$(pwd)
