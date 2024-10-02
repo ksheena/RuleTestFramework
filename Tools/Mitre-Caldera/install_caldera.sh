@@ -16,6 +16,7 @@ sudo npm cache clean -f
 sudo npm install -g n 
 sudo n stable
 
+pip3 install --upgrade certifi
 pip3 install docker 
 pip3 install importlib-metadata==4.13.0
 pip3 install sphinx_rtd_theme==1.3.0
