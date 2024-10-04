@@ -1,0 +1,13 @@
+  ERROR    Error enabling plugin=ssl, [Errno 2] No such file or directory: 'haproxy'                                                                                      c_plugin.py:70
+                    INFO     Enabled plugin: ssl                                                                                                                                            app_svc.py:128
+                    INFO     Enabled plugin: fieldmanual                                                                                                                                    app_svc.py:128
+                    INFO     Enabled plugin: manx                                                                                                                                           app_svc.py:128
+                    INFO     Enabled plugin: atomic                                                                                                                                         app_svc.py:128
+2024-10-04 09:22:20 ERROR    Error loading extension=plugins.human.pyhuman.app.workflows.open_office_writer, Can't connect to display ":100": b'No protocol specified\n'                   human_svc.py:52
+                    ERROR    Error loading extension=plugins.human.pyhuman.app.workflows.open_office_calc, Can't connect to display ":100": b'No protocol specified\n'                     human_svc.py:52
+                    INFO     Enabled plugin: human                                                                                                                                          app_svc.py:128
+                    WARNING  /usr/lib/python3/dist-packages/paramiko/transport.py:220: CryptographyDeprecationWarning: Blowfish has been deprecated and will be removed in a future        warnings.py:109
+                             release                                                                                                                                                                      
+                               "class": algorithms.Blowfish,                                                                                                                                              
+                                                                                                                                                                                                          
+                    ERROR    Error enabling plugin=builder, Error while fetching server API version: ('Connection aborted.', FileNotFoundError(2, 'No such file or directory'))     
