@@ -52,8 +52,8 @@ for i in $(find plugins -type f -iname requirements.txt); do echo $i;pip3 instal
 pip3 install aiohttp==3.10.8                         # to fix internal sever error. we need aiohttp==3.10.8   version. Requirement file have old
 
 echo -e "move the Conf \n"
-mv $path/caldera/conf/default.yml $path/caldera/conf/default.yml_bkp
-cp $path/default.yml $path/caldera/conf/
+#mv $path/caldera/conf/default.yml $path/caldera/conf/default.yml_bkp
+#cp $path/default.yml $path/caldera/conf/
 ls $path/caldera/conf/
 
 #screen -S caldera_install
