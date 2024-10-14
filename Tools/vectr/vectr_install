@@ -42,7 +42,7 @@ unzip sra-vectr-runtime-9.3.3-ce.zip
 ---------------------------------------------------------------------------------------------------------------------------
 # .env file
 
-VECTR_HOSTNAME=calera-vectr.com
+VECTR_HOSTNAME=caldera-vectr.com
 VECTR_PORT=8081
 
 #Set caddy cert profile (usercert, internal)
