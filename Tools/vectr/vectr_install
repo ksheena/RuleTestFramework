@@ -28,7 +28,7 @@ openssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out s
 openssl x509 -in server.crt -text -noout
 
 4. Create local DNS 
-root@analyst-virtual-machine:/opt/vectr/cert# cat /etc/hosts
+root@analyst-virtual-machine:/opt/vectr/cert# nano /etc/hosts
 10.99.156.108   caldera-vectr.com
 
 
