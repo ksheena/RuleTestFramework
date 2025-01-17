@@ -77,7 +77,15 @@ POSTGRES_PASSWORD=vectrtest
 POSTGRES_USER=vectr
 POSTGRES_DB=vectr
 ---------------------------------------------------------------------------------------------------------------------------
-
+#run to lauch docker container
 sudo docker compose up -d
+
+-------------------------------
+URL: https://caldera-vectr.com:8081
+Username: admin
+Password: 11_ThisIsTheFirstPassword_11         (initial default password)
+
+
+
 
 
