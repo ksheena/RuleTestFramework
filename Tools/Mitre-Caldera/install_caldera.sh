@@ -49,10 +49,10 @@ pip3 install -r requirements.txt
 echo -e "Install plugin requirement modules: \n"
 for i in $(find plugins -type f -iname requirements.txt); do echo $i;pip3 install -r $i; done
 
-pip3 install aiohttp==3.10.8                         # to fix internal sever error. we need aiohttp==3.10.8   version. Requirement file have old
+#pip3 install aiohttp==3.10.8                         # to fix internal sever error. we need aiohttp==3.10.8   version. Requirement file have old
 pip install websockets==13.1
 pip install rich 
-pip install aiohttp
+pip install aiohttp==3.10.11
 pip install aiohttp_apispec
 pip install aiohttp_jinja2
 pip install aiohttp_security_api
