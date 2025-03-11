@@ -50,6 +50,19 @@ echo -e "Install plugin requirement modules: \n"
 for i in $(find plugins -type f -iname requirements.txt); do echo $i;pip3 install -r $i; done
 
 pip3 install aiohttp==3.10.8                         # to fix internal sever error. we need aiohttp==3.10.8   version. Requirement file have old
+pip install websockets==13.1
+pip install rich 
+pip install aiohttp
+pip install aiohttp_apispec
+pip install aiohttp_jinja2
+pip install aiohttp_security_api
+pip install aiohttp_security
+pip install aiohttp_session
+pip install marshmallow_enum
+pip install ldap3
+pip install croniter
+pip install aioftp
+pip install asyncssh
 
 echo -e "move the Conf \n"
 #mv $path/caldera/conf/default.yml $path/caldera/conf/default.yml_bkp
