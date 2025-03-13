@@ -3,8 +3,8 @@
 echo -e "Installing the pre-requestory packages: \n"
 sudo apt-get -y update
 
-sudo apt install python3.9
-sudo apt install python3.9-venv python3.9-dev
+sudo apt install python3.9 -y
+sudo apt install python3.9-venv python3.9-dev -y
 ls /usr/bin/python*
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
 sudo update-alternatives --config python3
